@@ -1,0 +1,11 @@
+version: "3"
+services:
+  web:
+    image: golang:1.21.4
+    volumes:
+      - ./:/app
+    ports:
+      - ${WEB_PORT}:${WEB_CONTAINER_PORT}
+    environment:
+      - TZ=Asia/Tokyo
+    tty: true
