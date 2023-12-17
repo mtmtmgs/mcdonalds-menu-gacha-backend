@@ -14,6 +14,8 @@ func main() {
 		log.Fatal("環境変数を設定してください")
 	}
 
+	// d := db.New()
+
 	r := router.New()
 	r.Logger.Fatal(r.Start(":" + os.Getenv("WEB_PORT")))
 }
