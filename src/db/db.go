@@ -17,7 +17,7 @@ func New() *bun.DB {
 
 	// debug mode switching
 	db.AddQueryHook(bundebug.NewQueryHook(
-		bundebug.FromEnv(os.Getenv("DATABASE_DEBUG_MODE_FLG")),
+		bundebug.FromEnv("BUNDEBUG"),
 	))
 
 	return db

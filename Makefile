@@ -28,3 +28,6 @@ db-migrate-up: # 実行
 db-migrate-down: # ロールバック
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db rollback"
 
+# バッチ実行
+batch-exec:
+	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/batch && go run ."

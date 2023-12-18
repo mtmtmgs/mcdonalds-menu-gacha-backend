@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/batch/scripts"
@@ -9,6 +10,7 @@ import (
 )
 
 func main() {
+	fmt.Println("----------batch START----------")
 	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal(err)
@@ -21,4 +23,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("----------batch END----------")
 }

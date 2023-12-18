@@ -7,7 +7,7 @@ import (
 type Menu struct {
 	bun.BaseModel `bun:"table:menus,alias:m"`
 
-	base
+	Base
 	Name     string `bun:"name,notnull"`
 	Price    int64  `bun:"price,nullzero"`
 	Category string `bun:"category"`
