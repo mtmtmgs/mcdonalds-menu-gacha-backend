@@ -11,7 +11,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("環境変数を設定してください")
+		log.Fatal(err)
 	}
 
 	// d := db.New()
