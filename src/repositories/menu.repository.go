@@ -7,7 +7,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-type Menu interface {
+type IMenuRepository interface {
 	GetMenus() ([]models.Menu, error)
 }
 

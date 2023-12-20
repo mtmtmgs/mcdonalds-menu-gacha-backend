@@ -5,15 +5,15 @@ import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 )
 
-type Menu interface {
+type IMenuService interface {
 	GetMenus() ([]models.Menu, error)
 }
 
 type MenuService struct {
-	menuRepository repositories.Menu
+	menuRepository repositories.IMenuRepository
 }
 
-func NewMenuService(menuRepository repositories.Menu) *MenuService {
+func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
 	return &MenuService{menuRepository}
 }
 

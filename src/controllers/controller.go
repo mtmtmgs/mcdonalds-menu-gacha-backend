@@ -5,7 +5,7 @@ import (
 )
 
 type Manager struct {
-	MenuController Menu
+	MenuController IMenuController
 }
 
 func New(serviceManager *services.Manager) *Manager {

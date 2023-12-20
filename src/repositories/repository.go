@@ -3,7 +3,7 @@ package repositories
 import "github.com/uptrace/bun"
 
 type Manager struct {
-	MenuRepository Menu
+	MenuRepository IMenuRepository
 }
 
 func New(db *bun.DB) *Manager {

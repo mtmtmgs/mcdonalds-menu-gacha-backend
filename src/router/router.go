@@ -12,7 +12,6 @@ func New() *echo.Echo {
 	e.Logger.SetLevel(log.DEBUG)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-
 	return e
 }
 

@@ -7,15 +7,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Menu interface {
+type IMenuController interface {
 	GetMenus(c echo.Context) error
 }
 
 type MenuController struct {
-	menuService services.Menu
+	menuService services.IMenuService
 }
 
-func NewMenuController(menuService services.Menu) *MenuController {
+func NewMenuController(menuService services.IMenuService) *MenuController {
 	return &MenuController{menuService}
 }
 
