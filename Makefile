@@ -13,6 +13,8 @@ web-ssh-check: # テスト
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "uname -a"
 web-ssh: # 接続
 	docker exec -it ${WEB_CONTAINER_NAME} bash
+web-launch: # WEBアプリケーション起動
+	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app && go run ."
 
 # マイグレーション
 db-migrate-status: # 状態
