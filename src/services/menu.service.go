@@ -1,12 +1,13 @@
 package services
 
 import (
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 )
 
 type IMenuService interface {
-	GetMenus() ([]models.Menu, error)
+	GetMenuList(requests.GetMenuListRequest) (responses.GetMenuListResponse, error)
 }
 
 type MenuService struct {
@@ -17,7 +18,10 @@ func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
 	return &MenuService{menuRepository}
 }
 
-func (menuService *MenuService) GetMenus() ([]models.Menu, error) {
-	menus, err := menuService.menuRepository.GetMenus()
-	return menus, err
+/*
+メニューリスト取得
+*/
+func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (responses.GetMenuListResponse, error) {
+	menuList, err := menuService.menuRepository.GetMenuList()
+	return responses.NewGetMenuListResponse(menuList), err
 }

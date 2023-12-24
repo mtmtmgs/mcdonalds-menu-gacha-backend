@@ -17,5 +17,5 @@ func New() *echo.Echo {
 
 func Register(r *echo.Echo, controllerManager *controllers.Manager) {
 	rv := r.Group("/v1")
-	rv.GET("/menus", controllerManager.MenuController.GetMenus)
+	rv.GET("/menus", controllerManager.MenuController.GetMenuList)
 }

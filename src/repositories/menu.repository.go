@@ -8,7 +8,7 @@ import (
 )
 
 type IMenuRepository interface {
-	GetMenus() ([]models.Menu, error)
+	GetMenuList() ([]models.Menu, error)
 }
 
 type MenuRepository struct {
@@ -19,9 +19,9 @@ func NewMenuRepository(db *bun.DB) *MenuRepository {
 	return &MenuRepository{db}
 }
 
-func (menuRepository MenuRepository) GetMenus() ([]models.Menu, error) {
-	var menus []models.Menu
+func (menuRepository MenuRepository) GetMenuList() ([]models.Menu, error) {
+	var menuList []models.Menu
 	ctx := context.Background()
-	err := menuRepository.db.NewSelect().Model(&menus).Scan(ctx)
-	return menus, err
+	err := menuRepository.db.NewSelect().Model(&menuList).Scan(ctx)
+	return menuList, err
 }

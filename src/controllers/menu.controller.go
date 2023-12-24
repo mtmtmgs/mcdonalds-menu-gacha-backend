@@ -3,27 +3,34 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
 	"github.com/labstack/echo/v4"
 )
 
+func NewMenuController(menuService services.IMenuService) *MenuController {
+	return &MenuController{menuService}
+}
+
 type IMenuController interface {
-	GetMenus(c echo.Context) error
+	GetMenuList(c echo.Context) error
 }
 
 type MenuController struct {
 	menuService services.IMenuService
 }
 
-func NewMenuController(menuService services.IMenuService) *MenuController {
-	return &MenuController{menuService}
-}
-
-// TODO response型
-func (menuController *MenuController) GetMenus(c echo.Context) error {
-	menus, err := menuController.menuService.GetMenus()
+/*
+メニューリスト取得
+*/
+func (menuController *MenuController) GetMenuList(c echo.Context) error {
+	req, err := requests.NewGetMenuListRequest(c)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "cannot get menus")
+		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSONPretty(http.StatusOK, menus, "  ")
+	res, err := menuController.menuService.GetMenuList(req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, res)
 }
