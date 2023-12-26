@@ -12,22 +12,34 @@ import (
 func init() {
 	Migrations.MustRegister(func(ctx context.Context, db *bun.DB) error {
 		fmt.Print(" [up migration] ")
-		_, err := db.NewCreateTable().
-			Model((*models.Menu)(nil)).
-			IfNotExists().
-			Exec(ctx)
-		if err != nil {
-			log.Fatal(err)
+		models := []interface{}{
+			(*models.User)(nil),
+			(*models.Menu)(nil),
+		}
+		for _, model := range models {
+			_, err := db.NewCreateTable().
+				Model(model).
+				IfNotExists().
+				Exec(ctx)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 		return nil
 	}, func(ctx context.Context, db *bun.DB) error {
 		fmt.Print(" [down migration] ")
-		_, err := db.NewDropTable().
-			Model((*models.Menu)(nil)).
-			IfExists().
-			Exec(ctx)
-		if err != nil {
-			log.Fatal(err)
+		models := []interface{}{
+			(*models.User)(nil),
+			(*models.Menu)(nil),
+		}
+		for _, model := range models {
+			_, err := db.NewDropTable().
+				Model(model).
+				IfExists().
+				Exec(ctx)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 		return nil
 	})

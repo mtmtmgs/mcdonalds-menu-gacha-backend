@@ -17,5 +17,8 @@ func New() *echo.Echo {
 
 func Register(r *echo.Echo, controllerManager *controllers.Manager) {
 	rv := r.Group("/v1")
+	rv.POST("/signup", controllerManager.UserController.SignUp)
+	rv.POST("/login", controllerManager.UserController.Login)
+	rv.GET("/user", controllerManager.UserController.GetUser)
 	rv.GET("/menus", controllerManager.MenuController.GetMenuList)
 }

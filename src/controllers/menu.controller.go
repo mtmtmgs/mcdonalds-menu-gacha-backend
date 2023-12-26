@@ -8,16 +8,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func NewMenuController(menuService services.IMenuService) *MenuController {
-	return &MenuController{menuService}
-}
-
 type IMenuController interface {
 	GetMenuList(c echo.Context) error
 }
 
 type MenuController struct {
 	menuService services.IMenuService
+}
+
+func NewMenuController(menuService services.IMenuService) *MenuController {
+	return &MenuController{menuService}
 }
 
 /*

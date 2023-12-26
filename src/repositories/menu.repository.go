@@ -19,7 +19,7 @@ func NewMenuRepository(db *bun.DB) *MenuRepository {
 	return &MenuRepository{db}
 }
 
-func (menuRepository MenuRepository) GetMenuList() ([]models.Menu, error) {
+func (menuRepository *MenuRepository) GetMenuList() ([]models.Menu, error) {
 	var menuList []models.Menu
 	ctx := context.Background()
 	err := menuRepository.db.NewSelect().Model(&menuList).Scan(ctx)

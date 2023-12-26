@@ -5,11 +5,13 @@ import (
 )
 
 type Manager struct {
+	UserService IUserService
 	MenuService IMenuService
 }
 
 func New(repositoryManager *repositories.Manager) *Manager {
 	return &Manager{
+		UserService: NewUserService(repositoryManager.UserRepository),
 		MenuService: NewMenuService(repositoryManager.MenuRepository),
 	}
 }

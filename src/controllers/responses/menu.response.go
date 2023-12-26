@@ -3,7 +3,7 @@ package responses
 import "github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 
 type GetMenuListResponse struct {
-	Items []GetMenuListItem `json:"rows"`
+	Items []GetMenuListItem `json:"items"`
 }
 
 type GetMenuListItem struct {
