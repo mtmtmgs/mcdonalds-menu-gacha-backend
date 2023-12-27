@@ -8,7 +8,7 @@ import (
 )
 
 type IUserRepository interface {
-	GetUser() (models.User, error)
+	GetUserByEmail(string) (models.User, error)
 	CreateUser(models.User) error
 }
 
@@ -20,10 +20,13 @@ func NewUserRepository(db *bun.DB) *UserRepository {
 	return &UserRepository{db}
 }
 
-func (userRepository *UserRepository) GetUser() (models.User, error) {
+func (userRepository *UserRepository) GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 	ctx := context.Background()
-	err := userRepository.db.NewSelect().Model(&user).Scan(ctx)
+	count, err := userRepository.db.NewSelect().Model(&user).Where("email = ?", email).ScanAndCount(ctx)
+	if count == 0 {
+		err = nil
+	}
 	return user, err
 }
 

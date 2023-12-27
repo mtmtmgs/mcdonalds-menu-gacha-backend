@@ -11,7 +11,10 @@ type Manager struct {
 
 func New(repositoryManager *repositories.Manager) *Manager {
 	return &Manager{
-		UserService: NewUserService(repositoryManager.UserRepository),
+		UserService: NewUserService(
+			repositoryManager.BaseRepository,
+			repositoryManager.UserRepository,
+		),
 		MenuService: NewMenuService(repositoryManager.MenuRepository),
 	}
 }

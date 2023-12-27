@@ -41,11 +41,15 @@ func (userController *UserController) SignUp(c echo.Context) error {
 ログイン
 */
 func (userController *UserController) Login(c echo.Context) error {
-	_, err := requests.NewLoginRequest(c)
+	req, err := requests.NewLoginRequest(c)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, nil)
+	res, err := userController.userService.Login(req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, err)
+	}
+	return c.JSON(http.StatusOK, res)
 }
 
 /*
