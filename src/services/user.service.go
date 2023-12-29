@@ -13,7 +13,7 @@ import (
 type IUserService interface {
 	SignUp(requests.SignUpRequest) error
 	Login(requests.LoginRequest) (responses.TokenResponse, error)
-	GetUser() (responses.GetUserResponse, error)
+	GetUser(uint) (responses.GetUserResponse, error)
 }
 
 type UserService struct {
@@ -53,33 +53,37 @@ func (userService *UserService) SignUp(req requests.SignUpRequest) error {
 ログイン
 */
 func (userService *UserService) Login(req requests.LoginRequest) (responses.TokenResponse, error) {
+	var res responses.TokenResponse
 	user, err := userService.userRepository.GetUserByEmail(req.Email)
 	if user == (models.User{}) {
-		return responses.TokenResponse{}, errors.Errorf("Unauthorized")
+		return res, errors.Errorf("Unauthorized")
 	}
 	if err != nil {
-		return responses.TokenResponse{}, errors.Errorf("Something went wrong")
+		return res, errors.Errorf("Something went wrong")
 	}
+	// パスワードチェック
 	ok := utils.ComparePassword(user.Password, req.Password)
 	if !ok {
-		return responses.TokenResponse{}, errors.Errorf("Unauthorized")
+		return res, errors.Errorf("Unauthorized")
 	}
 	// jwt生成
 	token, err := middlewares.GenerateJwt(user.Id)
 	if err != nil {
-		return responses.TokenResponse{}, errors.Errorf("Something went wrong")
+		return res, errors.Errorf("Something went wrong")
 	}
-	return responses.NewTokenResponse(token), nil
+	res = responses.NewTokenResponse(token)
+	return res, nil
 }
 
 /*
 ユーザ取得
 */
-func (userService *UserService) GetUser() (responses.GetUserResponse, error) {
-	// TODO jwtから取得
-	user, err := repositories.GetById[models.User](userService.baseRepository.GetDB(), 1)
+func (userService *UserService) GetUser(userId uint) (responses.GetUserResponse, error) {
+	var res responses.GetUserResponse
+	user, err := repositories.GetById[models.User](userService.baseRepository.GetDB(), userId)
 	if err != nil {
-		return responses.GetUserResponse{}, errors.Errorf("Something went wrong")
+		return res, errors.Errorf("Unauthorized")
 	}
-	return responses.NewGetUserResponse(user), err
+	res = responses.NewGetUserResponse(user)
+	return res, err
 }

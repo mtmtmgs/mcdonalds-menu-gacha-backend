@@ -40,3 +40,10 @@ func GenerateJwt(id uint) (string, error) {
 	}
 	return t, err
 }
+
+func GetUserIdByJwt(c echo.Context) uint {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*jwtCustomClaims)
+	userId := claims.Id
+	return userId
+}

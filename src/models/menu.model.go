@@ -1,8 +1,6 @@
 package models
 
-import (
-	"github.com/uptrace/bun"
-)
+import "github.com/uptrace/bun"
 
 type Menu struct {
 	bun.BaseModel `bun:"table:menus,alias:m"`

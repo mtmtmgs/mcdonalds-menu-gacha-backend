@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
 	"github.com/labstack/echo/v4"
 )
@@ -56,9 +57,10 @@ func (userController *UserController) Login(c echo.Context) error {
 ユーザ取得
 */
 func (userController *UserController) GetUser(c echo.Context) error {
-	res, err := userController.userService.GetUser()
+	userId := middlewares.GetUserIdByJwt(c)
+	res, err := userController.userService.GetUser(userId)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return echo.NewHTTPError(http.StatusUnauthorized, nil)
 	}
 	return c.JSON(http.StatusOK, res)
 }

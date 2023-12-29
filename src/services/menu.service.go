@@ -23,9 +23,11 @@ func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
 メニューリスト取得
 */
 func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (responses.GetMenuListResponse, error) {
+	var res responses.GetMenuListResponse
 	menuList, err := menuService.menuRepository.GetMenuList()
 	if err != nil {
-		return responses.GetMenuListResponse{}, errors.Errorf("Something went wrong")
+		return res, errors.Errorf("Something went wrong")
 	}
-	return responses.NewGetMenuListResponse(menuList), err
+	res = responses.NewGetMenuListResponse(menuList)
+	return res, err
 }
