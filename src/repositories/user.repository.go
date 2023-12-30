@@ -17,7 +17,7 @@ type UserRepository struct {
 }
 
 func NewUserRepository(db *bun.DB) *UserRepository {
-	return &UserRepository{db}
+	return &UserRepository{db: db}
 }
 
 func (userRepository *UserRepository) GetUserByEmail(email string) (models.User, error) {

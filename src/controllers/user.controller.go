@@ -20,7 +20,7 @@ type UserController struct {
 }
 
 func NewUserController(userService services.IUserService) *UserController {
-	return &UserController{userService}
+	return &UserController{userService: userService}
 }
 
 /*

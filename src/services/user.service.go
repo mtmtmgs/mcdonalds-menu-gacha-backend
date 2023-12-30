@@ -25,7 +25,10 @@ func NewUserService(
 	baseRepository repositories.IBaseRepository,
 	userRepository repositories.IUserRepository,
 ) *UserService {
-	return &UserService{baseRepository, userRepository}
+	return &UserService{
+		baseRepository: baseRepository,
+		userRepository: userRepository,
+	}
 }
 
 /*

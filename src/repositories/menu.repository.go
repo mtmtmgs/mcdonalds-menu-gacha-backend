@@ -16,7 +16,7 @@ type MenuRepository struct {
 }
 
 func NewMenuRepository(db *bun.DB) *MenuRepository {
-	return &MenuRepository{db}
+	return &MenuRepository{db: db}
 }
 
 func (menuRepository *MenuRepository) GetMenuList() ([]models.Menu, error) {

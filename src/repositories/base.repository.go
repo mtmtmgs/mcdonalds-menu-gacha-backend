@@ -15,7 +15,7 @@ type BaseRepository struct {
 }
 
 func NewBaseRepository(db *bun.DB) *BaseRepository {
-	return &BaseRepository{db}
+	return &BaseRepository{db: db}
 }
 
 func (baseRepository *BaseRepository) GetDB() *bun.DB {

@@ -17,7 +17,7 @@ type MenuController struct {
 }
 
 func NewMenuController(menuService services.IMenuService) *MenuController {
-	return &MenuController{menuService}
+	return &MenuController{menuService: menuService}
 }
 
 /*

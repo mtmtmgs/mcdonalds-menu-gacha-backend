@@ -16,7 +16,7 @@ type MenuService struct {
 }
 
 func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
-	return &MenuService{menuRepository}
+	return &MenuService{menuRepository: menuRepository}
 }
 
 /*
