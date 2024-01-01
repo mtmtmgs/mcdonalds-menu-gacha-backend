@@ -24,10 +24,10 @@ func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
 */
 func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (responses.GetMenuListResponse, error) {
 	var res responses.GetMenuListResponse
-	menuList, err := menuService.menuRepository.GetMenuList()
+	menuList, totalCount, err := menuService.menuRepository.GetMenuList(req.Page, req.Category, req.MealTimeType)
 	if err != nil {
 		return res, errors.Errorf("Something went wrong")
 	}
-	res = responses.NewGetMenuListResponse(menuList)
+	res = responses.NewGetMenuListResponse(menuList, totalCount)
 	return res, err
 }

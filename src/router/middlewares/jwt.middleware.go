@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 )
@@ -29,7 +30,7 @@ func GenerateJwt(id uint) (string, error) {
 	claims := jwtCustomClaims{
 		id,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 48)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * config.JwtTokenExpireHour)),
 		},
 	}
 

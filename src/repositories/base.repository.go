@@ -28,3 +28,10 @@ func GetById[T any](db *bun.DB, id uint) (T, error) {
 	err := db.NewSelect().Model(&model).Where("id = ?", id).Scan(ctx)
 	return model, err
 }
+
+func GetList[T any](db *bun.DB) ([]T, error) {
+	var model []T
+	ctx := context.Background()
+	err := db.NewSelect().Model(&model).Scan(ctx)
+	return model, err
+}

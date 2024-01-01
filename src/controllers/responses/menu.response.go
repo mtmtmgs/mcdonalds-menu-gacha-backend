@@ -1,12 +1,17 @@
 package responses
 
-import "github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+import (
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+)
 
 type GetMenuListResponse struct {
+	PagingResponse
 	Items []GetMenuListItem `json:"items"`
 }
 
 type GetMenuListItem struct {
+	Id           uint   `json:"id"`
 	CreatedAt    string `json:"createdAt"`
 	Name         string `json:"name"`
 	Price        int64  `json:"price"`
@@ -14,13 +19,16 @@ type GetMenuListItem struct {
 	MealTimeType string `json:"mealTimeType"`
 }
 
-func NewGetMenuListResponse(menuList []models.Menu) GetMenuListResponse {
+func NewGetMenuListResponse(menuList []models.Menu, totalCount int) GetMenuListResponse {
 	res := GetMenuListResponse{
 		Items: []GetMenuListItem{},
 	}
 
 	for _, menu := range menuList {
+		res.TotalCount = totalCount
+		res.PerPageCount = config.PerPageCount
 		res.Items = append(res.Items, GetMenuListItem{
+			Id:           menu.Id,
 			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),
 			Name:         menu.Name,
 			Price:        menu.Price,

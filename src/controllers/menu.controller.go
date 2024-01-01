@@ -24,10 +24,7 @@ func NewMenuController(menuService services.IMenuService) *MenuController {
 メニューリスト取得
 */
 func (menuController *MenuController) GetMenuList(c echo.Context) error {
-	req, err := requests.NewGetMenuListRequest(c)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
-	}
+	req := requests.NewGetMenuListRequest(c)
 	res, err := menuController.menuService.GetMenuList(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
