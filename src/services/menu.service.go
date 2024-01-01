@@ -1,22 +1,34 @@
 package services
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 	"github.com/pkg/errors"
 )
 
 type IMenuService interface {
 	GetMenuList(requests.GetMenuListRequest) (responses.GetMenuListResponse, error)
+	GetMenuGacha(requests.GetMenuGachaRequest) (responses.GetMenuGachaResponse, error)
 }
 
 type MenuService struct {
+	baseRepository repositories.IBaseRepository
 	menuRepository repositories.IMenuRepository
 }
 
-func NewMenuService(menuRepository repositories.IMenuRepository) *MenuService {
-	return &MenuService{menuRepository: menuRepository}
+func NewMenuService(
+	baseRepository repositories.IBaseRepository,
+	menuRepository repositories.IMenuRepository,
+) *MenuService {
+	return &MenuService{
+		baseRepository: baseRepository,
+		menuRepository: menuRepository,
+	}
 }
 
 /*
@@ -29,5 +41,49 @@ func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (re
 		return res, errors.Errorf("Something went wrong")
 	}
 	res = responses.NewGetMenuListResponse(menuList, totalCount)
+	return res, err
+}
+
+/*
+メニューガチャ取得
+*/
+func (menuService *MenuService) GetMenuGacha(req requests.GetMenuGachaRequest) (responses.GetMenuGachaResponse, error) {
+	var res responses.GetMenuGachaResponse
+	menuList, err := repositories.GetList[models.Menu](menuService.baseRepository.GetDB())
+	if err != nil {
+		return res, errors.Errorf("Something went wrong")
+	}
+
+	budget := req.Budget
+
+	// 予算内のメニューに絞る
+	var menuWithinBudget []models.Menu
+	for _, menu := range menuList {
+		if int(menu.Price) <= budget {
+			menuWithinBudget = append(menuWithinBudget, menu)
+		}
+	}
+
+	// 乱数シード
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	// 予算内でメニューを繰り返して格納
+	var gachaMenuList []models.Menu
+	for {
+		if len(menuWithinBudget) == 0 {
+			break
+		}
+		var tmp []models.Menu
+		ran := r.Intn(len(menuWithinBudget))
+		budget = budget - int(menuWithinBudget[ran].Price)
+		gachaMenuList = append(gachaMenuList, menuWithinBudget[ran])
+		for _, menu := range menuWithinBudget {
+			if int(menu.Price) <= budget {
+				tmp = append(tmp, menu)
+			}
+		}
+		menuWithinBudget = tmp
+	}
+	res = responses.NewGetMenuGachaResponse(gachaMenuList, req.Budget)
 	return res, err
 }

@@ -10,6 +10,7 @@ import (
 
 type IMenuController interface {
 	GetMenuList(c echo.Context) error
+	GetMenuGacha(c echo.Context) error
 }
 
 type MenuController struct {
@@ -26,6 +27,21 @@ func NewMenuController(menuService services.IMenuService) *MenuController {
 func (menuController *MenuController) GetMenuList(c echo.Context) error {
 	req := requests.NewGetMenuListRequest(c)
 	res, err := menuController.menuService.GetMenuList(req)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, res)
+}
+
+/*
+メニューガチャ取得
+*/
+func (menuController *MenuController) GetMenuGacha(c echo.Context) error {
+	req, err := requests.NewGetMenuGachaRequest(c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	res, err := menuController.menuService.GetMenuGacha(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}

@@ -6,6 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+/*
+サインアップ
+*/
 type SignUpRequest struct {
 	FirstName string `json:"firstName" validate:"required"`
 	LastName  string `json:"lastName" validate:"required"`
@@ -20,6 +23,9 @@ func NewSignUpRequest(c echo.Context) (SignUpRequest, error) {
 	return req, err
 }
 
+/*
+ログイン
+*/
 type LoginRequest struct {
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`

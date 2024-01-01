@@ -30,8 +30,8 @@ func GetById[T any](db *bun.DB, id uint) (T, error) {
 }
 
 func GetList[T any](db *bun.DB) ([]T, error) {
-	var model []T
+	var modelList []T
 	ctx := context.Background()
-	err := db.NewSelect().Model(&model).Scan(ctx)
-	return model, err
+	err := db.NewSelect().Model(&modelList).Scan(ctx)
+	return modelList, err
 }

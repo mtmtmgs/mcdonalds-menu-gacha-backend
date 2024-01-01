@@ -6,6 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+/*
+ページング
+*/
 type PagingRequest struct {
 	Page int
 }

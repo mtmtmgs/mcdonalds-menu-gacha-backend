@@ -2,6 +2,9 @@ package responses
 
 import "github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 
+/*
+ユーザ取得
+*/
 type GetUserResponse struct {
 	LastName  string `json:"lastName"`
 	FirstName string `json:"firstName"`

@@ -15,6 +15,9 @@ func New(repositoryManager *repositories.Manager) *Manager {
 			repositoryManager.BaseRepository,
 			repositoryManager.UserRepository,
 		),
-		MenuService: NewMenuService(repositoryManager.MenuRepository),
+		MenuService: NewMenuService(
+			repositoryManager.BaseRepository,
+			repositoryManager.MenuRepository,
+		),
 	}
 }

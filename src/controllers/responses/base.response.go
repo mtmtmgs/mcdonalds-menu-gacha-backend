@@ -1,5 +1,8 @@
 package responses
 
+/*
+トークン
+*/
 type TokenResponse struct {
 	Token string `json:"token"`
 }
@@ -11,6 +14,9 @@ func NewTokenResponse(token string) TokenResponse {
 	return res
 }
 
+/*
+ページング
+*/
 type PagingResponse struct {
 	TotalCount   int `json:"totalCount"`
 	PerPageCount int `json:"perPageCount"`

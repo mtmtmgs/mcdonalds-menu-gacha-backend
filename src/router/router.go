@@ -27,4 +27,5 @@ func Register(r *echo.Echo, controllerManager *controllers.Manager) {
 	rv.POST("/login", controllerManager.UserController.Login)
 	rv.GET("/user", controllerManager.UserController.GetUser, jwtAuth)
 	rv.GET("/menus", controllerManager.MenuController.GetMenuList, jwtAuth)
+	rv.GET("/menu-gacha", controllerManager.MenuController.GetMenuGacha)
 }
