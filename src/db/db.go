@@ -15,7 +15,7 @@ func New() *bun.DB {
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(sqldb, pgdialect.New())
 
-	// debug mode switching
+	// .envのBUNDEBUGでデバッグモードを切り替え
 	db.AddQueryHook(bundebug.NewQueryHook(
 		bundebug.FromEnv("BUNDEBUG"),
 	))

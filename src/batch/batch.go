@@ -9,10 +9,15 @@ import (
 )
 
 func main() {
-	log.Println("----------batch START----------")
+	log.Println("------------------------------------------------------------")
+	log.Println("BEGIN batch")
+	log.Println("------------------------------------------------------------")
 	err := godotenv.Load("../.env")
 	if err != nil {
-		log.Fatal(err)
+		log.Println("------------------------------------------------------------")
+		log.Println("EXECUTE FAILURE!")
+		log.Println("------------------------------------------------------------")
+		log.Fatalf("DETAIL: %v", err)
 	}
 
 	db := db.New()
@@ -22,5 +27,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("----------batch END----------")
+	log.Println("------------------------------------------------------------")
+	log.Println("FINISHED SUCCESSFUL batch")
+	log.Println("------------------------------------------------------------")
 }

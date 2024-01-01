@@ -51,7 +51,9 @@ type category struct {
 各メニューを取得してDBに保存
 */
 func FetchAndRegisterMcdonaldsMenu(db *bun.DB) error {
-	log.Printf("----------FetchAndRegisterMcdonaldsMenu() START----------")
+	log.Println("------------------------------------------------------------")
+	log.Println("START FetchAndRegisterMcdonaldsMenu()")
+	log.Println("------------------------------------------------------------")
 	// 時間帯別リスト
 	var mealTimeTypes = []string{
 		Morning,
@@ -91,7 +93,9 @@ func FetchAndRegisterMcdonaldsMenu(db *bun.DB) error {
 		return err
 	}
 	log.Printf("menusテーブルへの保存が完了しました. %d件", len(menuList))
-	log.Printf("----------FetchAndRegisterMcdonaldsMenu() END----------")
+	log.Println("------------------------------------------------------------")
+	log.Println("END FetchAndRegisterMcdonaldsMenu()")
+	log.Println("------------------------------------------------------------")
 	return nil
 }
 
@@ -103,15 +107,24 @@ func fetchMenus(ch chan models.Menu, wg *sync.WaitGroup, mealTimeTypes []string,
 
 	res, err := http.Get(category.url)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("------------------------------------------------------------")
+		log.Println("EXECUTE FAILURE!")
+		log.Println("------------------------------------------------------------")
+		log.Fatalf("DETAIL: %s %v", category.url, err)
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
+		log.Println("------------------------------------------------------------")
+		log.Println("EXECUTE FAILURE!")
+		log.Println("------------------------------------------------------------")
+		log.Fatalf("DETAIL: %s status code: %d %s", category.url, res.StatusCode, res.Status)
 	}
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("------------------------------------------------------------")
+		log.Println("EXECUTE FAILURE!")
+		log.Println("------------------------------------------------------------")
+		log.Fatalf("DETAIL: %s %v", category.url, err)
 	}
 
 	var count int
