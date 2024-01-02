@@ -25,7 +25,10 @@ func main() {
 
 	err = scripts.FetchAndRegisterMcdonaldsMenu(db)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("------------------------------------------------------------")
+		log.Println("EXECUTE FAILURE!")
+		log.Println("------------------------------------------------------------")
+		log.Fatalf("DETAIL: %v", err)
 	}
 	log.Println("------------------------------------------------------------")
 	log.Println("FINISHED SUCCESSFUL batch")
