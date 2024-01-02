@@ -54,12 +54,10 @@ func (menuService *MenuService) GetMenuGacha(req requests.GetMenuGachaRequest) (
 		return res, errors.Errorf("Something went wrong")
 	}
 
-	budget := req.Budget
-
 	// 予算内のメニューに絞る
 	var menuWithinBudget []models.Menu
 	for _, menu := range menuList {
-		if int(menu.Price) <= budget {
+		if int(menu.Price) <= req.Budget {
 			menuWithinBudget = append(menuWithinBudget, menu)
 		}
 	}
@@ -69,6 +67,7 @@ func (menuService *MenuService) GetMenuGacha(req requests.GetMenuGachaRequest) (
 
 	// 予算内でメニューを繰り返して格納
 	var gachaMenuList []models.Menu
+	budget := req.Budget
 	for {
 		if len(menuWithinBudget) == 0 {
 			break

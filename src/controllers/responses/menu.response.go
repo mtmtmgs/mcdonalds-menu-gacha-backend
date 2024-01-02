@@ -64,8 +64,8 @@ func NewGetMenuGachaResponse(menuList []models.Menu, budget int) GetMenuGachaRes
 		Items: []GetMenuGachaItem{},
 	}
 
+	res.Budget = budget
 	for _, menu := range menuList {
-		res.Budget = budget
 		res.Items = append(res.Items, GetMenuGachaItem{
 			Id:           menu.Id,
 			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),
