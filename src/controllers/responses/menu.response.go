@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 )
 
@@ -29,7 +29,7 @@ func NewGetMenuListResponse(menuList []models.Menu, totalCount int) GetMenuListR
 
 	for _, menu := range menuList {
 		res.TotalCount = totalCount
-		res.PerPageCount = config.PerPageCount
+		res.PerPageCount = consts.PerPageCount
 		res.Items = append(res.Items, GetMenuListItem{
 			Id:           menu.Id,
 			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),

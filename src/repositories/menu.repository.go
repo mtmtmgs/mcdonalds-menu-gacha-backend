@@ -3,7 +3,7 @@ package repositories
 import (
 	"context"
 
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 	"github.com/uptrace/bun"
 )
@@ -31,7 +31,7 @@ func (menuRepository *MenuRepository) GetMenuList(page int, category string, mea
 		return menuList, totalCount, err
 	}
 	if page != 0 {
-		query.Offset((page - 1) * config.PerPageCount)
+		query.Offset((page - 1) * consts.PerPageCount)
 	}
 	if category != "" {
 		query.Where("category = ?", category)
@@ -39,6 +39,6 @@ func (menuRepository *MenuRepository) GetMenuList(page int, category string, mea
 	if mealTimeType != "" {
 		query.Where("meal_time_type = ?", mealTimeType)
 	}
-	err = query.Limit(config.PerPageCount).Scan(ctx)
+	err = query.Limit(consts.PerPageCount).Scan(ctx)
 	return menuList, totalCount, err
 }

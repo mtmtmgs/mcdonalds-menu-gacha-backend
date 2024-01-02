@@ -3,7 +3,7 @@ package requests
 import (
 	"strconv"
 
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/labstack/echo/v4"
 )
 
@@ -37,7 +37,7 @@ type GetMenuGachaRequest struct {
 
 func NewGetMenuGachaRequest(c echo.Context) GetMenuGachaRequest {
 	req := GetMenuGachaRequest{
-		Budget: config.MenuGachaDefaultBudget,
+		Budget: consts.MenuGachaDefaultBudget,
 	}
 
 	budgetNum, err := strconv.Atoi(c.QueryParam("budget"))
