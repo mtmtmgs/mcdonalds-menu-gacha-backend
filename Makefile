@@ -37,6 +37,10 @@ db-migrate-up:
 db-migrate-down:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db rollback"
 
+# seedデータ（menus）
+db-seed:
+	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/seed && go run ."
+
 # バッチ実行
 batch-exec:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/batch && go run ."
