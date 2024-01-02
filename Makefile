@@ -20,6 +20,9 @@ web-launch:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app && go run ."
 
 # マイグレーション
+## 初期化（マイグレーション管理テーブル作成）
+db-migrate-init:
+	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db init"
 ## ステータス確認
 db-migrate-status:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db status"
