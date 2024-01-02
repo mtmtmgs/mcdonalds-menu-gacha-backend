@@ -1,6 +1,7 @@
 version: "3"
 services:
   web:
+    container_name: ${WEB_CONTAINER_NAME}
     image: golang:1.21.4
     volumes:
       - ./src:/app
@@ -13,6 +14,7 @@ services:
       - db
 
   db:
+    container_name: ${POSTGRES_HOST}
     image: postgres:14
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_CONTAINER_PORT}
