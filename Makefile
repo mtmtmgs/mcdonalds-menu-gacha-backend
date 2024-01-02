@@ -8,26 +8,33 @@ MIKEFILE_ARG ?=
 sample:
 	@echo "sample"
 
-# WEBコンテナ接続
-web-ssh-check: # テスト
+# WEBコンテナ
+## sh接続テスト
+web-sh-check:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "uname -a"
-web-ssh: # 接続
+## bash接続
+web-sh:
 	docker exec -it ${WEB_CONTAINER_NAME} bash
-web-launch: # WEBアプリケーション起動
+## WEBアプリケーション起動
+web-launch:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app && go run ."
 
 # マイグレーション
-db-migrate-status: # 状態
+## ステータス確認
+db-migrate-status:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db status"
-db-migrate-create: # マイグレーションファイル生成
+## マイグレーションファイル生成
+db-migrate-create:
 ifndef MIKEFILE_ARG
-	@echo '第2引数の"MIKEFILE_ARG="にファイル名を入れてください. **例**: make db-migrate-create MIKEFILE_ARG=$${file_name}'
+	@echo '第2引数の"MIKEFILE_ARG="にマイグレーションファイル名を入れてください. **例**: make db-migrate-create MIKEFILE_ARG=$${file_name}'
 else
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db create_go ${MIKEFILE_ARG}"
 endif
-db-migrate-up: # 実行
+## 実行
+db-migrate-up:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db migrate"
-db-migrate-down: # ロールバック
+## ロールバック
+db-migrate-down:
 	docker exec -it ${WEB_CONTAINER_NAME} sh -c "cd /app/db/migrate && go run . db rollback"
 
 # バッチ実行
