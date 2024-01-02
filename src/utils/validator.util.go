@@ -42,30 +42,30 @@ func ConvertValidationErrorMessage(errs validator.ValidationErrors) error {
 		switch err.Tag() {
 		// 以下、標準バリデーション
 		case "required":
-			errorMessage = fmt.Sprintf("%sは必須入力です", strings.ToLower(err.Field()))
+			errorMessage = fmt.Sprintf("%sは必須入力です", err.Field())
 		case "min":
 			switch err.Type().String() {
 			case "string":
-				errorMessage = fmt.Sprintf("%sは%s文字以上の入力が必要です", strings.ToLower(err.Field()), err.Param())
+				errorMessage = fmt.Sprintf("%sは%s文字以上の入力が必要です", err.Field(), err.Param())
 			default:
-				errorMessage = fmt.Sprintf("%sは%s以上の入力が必要です", strings.ToLower(err.Field()), err.Param())
+				errorMessage = fmt.Sprintf("%sは%s以上の入力が必要です", err.Field(), err.Param())
 			}
 		case "max":
 			switch err.Type().String() {
 			case "string":
-				errorMessage = fmt.Sprintf("%sは%s文字以下の入力が必要です", strings.ToLower(err.Field()), err.Param())
+				errorMessage = fmt.Sprintf("%sは%s文字以下の入力が必要です", err.Field(), err.Param())
 			default:
-				errorMessage = fmt.Sprintf("%sは%s以下の入力が必要です", strings.ToLower(err.Field()), err.Param())
+				errorMessage = fmt.Sprintf("%sは%s以下の入力が必要です", err.Field(), err.Param())
 			}
 		case "excludesall":
-			errorMessage = fmt.Sprintf("%sには%sの文字を使用できません", strings.ToLower(err.Field()), err.Param())
+			errorMessage = fmt.Sprintf("%sには%sの文字を使用できません", err.Field(), err.Param())
 		case "containsany":
-			errorMessage = fmt.Sprintf("%sには%sの文字を少なくとも1つ使用してください", strings.ToLower(err.Field()), err.Param())
+			errorMessage = fmt.Sprintf("%sには%sの文字を少なくとも1つ使用してください", err.Field(), err.Param())
 		// 以下、カスタムバリデーション
 		case "passwordRule":
-			errorMessage = fmt.Sprintf("%sには少なくとも1つの大文字を使用してください", strings.ToLower(err.Field()))
+			errorMessage = fmt.Sprintf("%sには少なくとも1つの大文字を使用してください", err.Field())
 		case "dateRule":
-			errorMessage = fmt.Sprintf("%sはyyyy-MM-dd形式の入力が必要です", strings.ToLower(err.Field()))
+			errorMessage = fmt.Sprintf("%sはyyyy-MM-dd形式の入力が必要です", err.Field())
 		default:
 			errorMessage = fmt.Sprintf("%s", err)
 		}
