@@ -37,10 +37,7 @@ func (menuController *MenuController) GetMenuList(c echo.Context) error {
 メニューガチャ取得
 */
 func (menuController *MenuController) GetMenuGacha(c echo.Context) error {
-	req, err := requests.NewGetMenuGachaRequest(c)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
-	}
+	req := requests.NewGetMenuGachaRequest(c)
 	res, err := menuController.menuService.GetMenuGacha(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)

@@ -3,9 +3,7 @@ package requests
 import (
 	"strconv"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/config"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -34,23 +32,17 @@ func NewGetMenuListRequest(c echo.Context) GetMenuListRequest {
 メニューガチャ取得
 */
 type GetMenuGachaRequest struct {
-	Budget int `json:"budget"`
+	Budget int
 }
 
-func NewGetMenuGachaRequest(c echo.Context) (GetMenuGachaRequest, error) {
+func NewGetMenuGachaRequest(c echo.Context) GetMenuGachaRequest {
 	req := GetMenuGachaRequest{
 		Budget: config.MenuGachaDefaultBudget,
 	}
 
-	err := c.Bind(&req)
-	if err != nil {
-		return req, err
+	budgetNum, err := strconv.Atoi(c.QueryParam("budget"))
+	if err == nil && budgetNum > 0 {
+		req.Budget = budgetNum
 	}
-	err = c.Validate(&req)
-	if err != nil {
-		errs := err.(validator.ValidationErrors)
-		err = utils.ConvertValidationErrorMessage(errs)
-		return req, err
-	}
-	return req, err
+	return req
 }
