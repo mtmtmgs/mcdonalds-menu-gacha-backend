@@ -2,20 +2,28 @@ version: "3"
 services:
   web:
     container_name: ${WEB_CONTAINER_NAME}
-    image: golang:1.21.4
+    build:
+      context: ./src
     volumes:
       - ./src:/app
     ports:
       - ${WEB_PORT}:${WEB_CONTAINER_PORT}
     environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Asia/Tokyo
-    tty: true
     depends_on:
       - db
+    tty: true
 
   db:
     container_name: ${POSTGRES_HOST}
     image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_CONTAINER_PORT}
     environment:
@@ -23,8 +31,6 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=Asia/Tokyo
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
