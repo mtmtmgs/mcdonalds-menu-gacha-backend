@@ -8,20 +8,16 @@ import (
 	"strconv"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/db"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 	log.Println("------------------------------------------------------------")
 	log.Println("BEGIN seed")
 	log.Println("------------------------------------------------------------")
-	err := godotenv.Load("../../.env")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	db := db.New()
+	env := env.NewCmdEnv("../../.env")
+	db := db.New(env)
 	defer db.Close()
 
 	file, err := os.Open("./csv/menus.csv")

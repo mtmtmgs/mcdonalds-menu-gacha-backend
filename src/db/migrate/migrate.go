@@ -8,19 +8,15 @@ import (
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/db"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/db/migrate/migrations"
-	"github.com/joho/godotenv"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
 	"github.com/uptrace/bun/migrate"
 
 	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	err := godotenv.Load("../../.env")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	db := db.New()
+	env := env.NewCmdEnv("../../.env")
+	db := db.New(env)
 	defer db.Close()
 
 	app := &cli.App{

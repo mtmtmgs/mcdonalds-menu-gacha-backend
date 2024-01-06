@@ -2,15 +2,15 @@ package router
 
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/labstack/gommon/log"
 )
 
-func New() *echo.Echo {
+func New(env env.Env) *echo.Echo {
 	e := echo.New()
-	e.Logger.SetLevel(log.DEBUG)
+	e.Logger.SetLevel(env.LoggerLevel)
 	e.Validator = middlewares.NewValidatorMiddleware()
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
