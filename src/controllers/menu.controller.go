@@ -30,7 +30,7 @@ func (menuController *MenuController) GetMenuList(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, res)
+	return c.JSONPretty(http.StatusOK, res, "  ")
 }
 
 /*
@@ -42,5 +42,5 @@ func (menuController *MenuController) GetMenuGacha(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, res)
+	return c.JSONPretty(http.StatusOK, res, "  ")
 }

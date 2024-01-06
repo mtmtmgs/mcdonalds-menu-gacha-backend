@@ -35,7 +35,7 @@ func (userController *UserController) SignUp(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, nil)
+	return c.JSONPretty(http.StatusOK, nil, "  ")
 }
 
 /*
@@ -50,7 +50,7 @@ func (userController *UserController) Login(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
-	return c.JSON(http.StatusOK, res)
+	return c.JSONPretty(http.StatusOK, res, "  ")
 }
 
 /*
@@ -62,5 +62,5 @@ func (userController *UserController) GetUser(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, nil)
 	}
-	return c.JSON(http.StatusOK, res)
+	return c.JSONPretty(http.StatusOK, res, "  ")
 }
