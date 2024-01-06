@@ -1,11 +1,15 @@
 package env
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
+	"cloud.google.com/go/cloudsqlconn"
+	"cloud.google.com/go/cloudsqlconn/postgres/pgxv4"
 	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/log"
+	"github.com/uptrace/bun/driver/pgdriver"
 	"github.com/uptrace/bun/extra/bundebug"
 )
 
@@ -15,7 +19,7 @@ const (
 )
 
 type Env struct {
-	Dsn         string
+	DBConnect   *sql.DB
 	QueryHook   *bundebug.QueryHook
 	LoggerLevel log.Lvl
 }
@@ -36,15 +40,15 @@ func getEnv() Env {
 	var e Env
 	switch env {
 	case Dev:
-		e.Dsn = getDsn(env)
+		e.DBConnect = getDBConnect(env)
 		e.QueryHook = getQueryHook(env)
 		e.LoggerLevel = getLoggerLevel(env)
 	case Prod:
-		e.Dsn = getDsn(env)
+		e.DBConnect = getDBConnect(env)
 		e.QueryHook = getQueryHook(env)
 		e.LoggerLevel = getLoggerLevel(env)
 	default:
-		e.Dsn = getDsn(Dev)
+		e.DBConnect = getDBConnect(Dev)
 		e.QueryHook = getQueryHook(Dev)
 		e.LoggerLevel = getLoggerLevel(Dev)
 	}
@@ -52,30 +56,42 @@ func getEnv() Env {
 }
 
 /*
-DBアクセスURL
-PostgreSQL
+DBコネクト（PostgreSQL）
+開発: Dockerコンテナ
+本番: Cloud SQL（パブリックIP）
 */
-func getDsn(env string) string {
+func getDBConnect(env string) *sql.DB {
 	switch env {
 	case Dev:
-		return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable",
-			os.Getenv("POSTGRES_USER"),
-			os.Getenv("POSTGRES_PASSWORD"),
-			os.Getenv("POSTGRES_HOST"),
-			os.Getenv("POSTGRES_PORT"),
-			os.Getenv("POSTGRES_DB"),
-		)
+		sqldb := sql.OpenDB(pgdriver.NewConnector((pgdriver.WithDSN(
+			fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable",
+				os.Getenv("POSTGRES_USER"),
+				os.Getenv("POSTGRES_PASSWORD"),
+				os.Getenv("POSTGRES_HOST"),
+				os.Getenv("POSTGRES_PORT"),
+				os.Getenv("POSTGRES_DB")),
+		))))
+		return sqldb
 	case Prod:
-		// Cloud SQL（パブリックIP）
-		return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable",
-			os.Getenv("POSTGRES_USER"),
-			os.Getenv("POSTGRES_PASSWORD"),
-			os.Getenv("POSTGRES_HOST"),
-			os.Getenv("POSTGRES_PORT"),
-			os.Getenv("POSTGRES_DB"),
-		)
+		keyJson := []byte(os.Getenv("CLOUD_SQL_USER_KEY_JSON"))
+		cleanup, err := pgxv4.RegisterDriver("cloudsql-postgres", cloudsqlconn.WithCredentialsJSON(keyJson))
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer cleanup()
+		sqldb, err := sql.Open("cloudsql-postgres",
+			fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
+				os.Getenv("CLOUD_SQL_INSTANCE_CONNECTION_NAME"),
+				os.Getenv("CLOUD_SQL_USER"),
+				os.Getenv("CLOUD_SQL_PASSWORD"),
+				os.Getenv("CLOUD_SQL_DB"),
+			))
+		if err != nil {
+			log.Fatal(err)
+		}
+		return sqldb
 	default:
-		return ""
+		return nil
 	}
 }
 
