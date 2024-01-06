@@ -46,8 +46,9 @@ func NewGetMenuListResponse(menuList []models.Menu, totalCount int) GetMenuListR
 メニューガチャ取得
 */
 type GetMenuGachaResponse struct {
-	Budget int                `json:"budget"`
-	Items  []GetMenuGachaItem `json:"items"`
+	Budget     int                `json:"budget"`
+	TotalPrice int                `json:"totalPrice"`
+	Items      []GetMenuGachaItem `json:"items"`
 }
 
 type GetMenuGachaItem struct {
@@ -66,6 +67,7 @@ func NewGetMenuGachaResponse(menuList []models.Menu, budget int) GetMenuGachaRes
 
 	res.Budget = budget
 	for _, menu := range menuList {
+		res.TotalPrice = res.TotalPrice + int(menu.Price)
 		res.Items = append(res.Items, GetMenuGachaItem{
 			Id:           menu.Id,
 			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),
