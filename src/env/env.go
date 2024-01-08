@@ -58,7 +58,7 @@ func getEnv() Env {
 /*
 DBコネクト（PostgreSQL）
 開発: Dockerコンテナ
-本番: Cloud SQL（パブリックIP）
+本番: Cloud SQL
 */
 func getDBConnect(env string) *sql.DB {
 	switch env {
