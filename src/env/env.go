@@ -25,12 +25,18 @@ type Env struct {
 }
 
 func NewAppEnv() Env {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 	return getEnv()
 }
 
 func NewCmdEnv(path string) Env {
-	godotenv.Load(path)
+	err := godotenv.Load(path)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return getEnv()
 }
 
@@ -78,7 +84,6 @@ func getDBConnect(env string) *sql.DB {
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer cleanup()
 		sqldb, err := sql.Open("cloudsql-postgres",
 			fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
 				os.Getenv("CLOUD_SQL_INSTANCE_CONNECTION_NAME"),
@@ -87,8 +92,10 @@ func getDBConnect(env string) *sql.DB {
 				os.Getenv("CLOUD_SQL_DB"),
 			))
 		if err != nil {
+			_ = cleanup()
 			log.Fatal(err)
 		}
+		_ = cleanup()
 		return sqldb
 	default:
 		return nil

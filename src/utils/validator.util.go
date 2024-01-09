@@ -15,8 +15,8 @@ import (
 requestsパッケージのバリデーションタグで使用する
 */
 func RegisterCustomValidation(v *validator.Validate) {
-	v.RegisterValidation("passwordRule", passwordRule)
-	v.RegisterValidation("dateRule", dateRule)
+	_ = v.RegisterValidation("passwordRule", passwordRule)
+	_ = v.RegisterValidation("dateRule", dateRule)
 }
 
 func passwordRule(fl validator.FieldLevel) bool {
