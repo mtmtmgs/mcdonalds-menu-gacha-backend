@@ -11,6 +11,7 @@ services:
     ports:
       - ${WEB_PORT}:${WEB_CONTAINER_PORT}
     environment:
+      - ENV=${ENV}
       - WEB_PORT=${WEB_PORT}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
@@ -18,7 +19,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
-      - TZ=Asia/Tokyo
+      - TZ=${TZ}
     depends_on:
       - db
     tty: true
@@ -35,7 +36,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - TZ=Asia/Tokyo
+      - TZ=${TZ}
 
 volumes:
   postgres_data:
