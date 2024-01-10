@@ -17,6 +17,7 @@ URL: https://hm-mtmtmgs.net/v1/menu-gacha?budget=1000
   - [環境構築](#環境構築)
 
 ## システム構成図
+![diagram](https://github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/assets/150935913/0dd36170-b773-46bd-bddd-3c0580a19216)
 
 ## 技術構成
 
