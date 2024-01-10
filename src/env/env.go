@@ -25,18 +25,12 @@ type Env struct {
 }
 
 func NewAppEnv() Env {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
+	_ = godotenv.Load()
 	return getEnv()
 }
 
 func NewCmdEnv(path string) Env {
-	err := godotenv.Load(path)
-	if err != nil {
-		log.Fatal(err)
-	}
+	_ = godotenv.Load(path)
 	return getEnv()
 }
 
