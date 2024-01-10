@@ -39,7 +39,15 @@ jobs:
       - name: GCP Authorization
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      - run: echo "ok! ${{ github.sha }}"
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2.0.1
+
+      - name: Build and push to Cloud Build
+        working-directory: ./src
+        run: gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_ID }}:${{ github.sha }}
+
+      - name: Deploy to Cloud Run
+        run: gcloud beta run deploy ${{ secrets.CLOUD_RUN_SERVICE_ID }} --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.IMAGE_ID }}:${{ github.sha }}
