@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/uptrace/bun"
 )
 
@@ -17,7 +18,9 @@ type UserRepository struct {
 }
 
 func NewUserRepository(db *bun.DB) *UserRepository {
-	return &UserRepository{db: db}
+	userRepository := UserRepository{db: db}
+	utils.CheckDependencies(userRepository)
+	return &userRepository
 }
 
 func (userRepository *UserRepository) GetUserByEmail(email string) (models.User, error) {

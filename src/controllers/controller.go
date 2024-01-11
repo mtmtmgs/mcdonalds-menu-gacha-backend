@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 )
 
 type Manager struct {
@@ -10,8 +11,10 @@ type Manager struct {
 }
 
 func New(serviceManager *services.Manager) *Manager {
-	return &Manager{
+	manager := Manager{
 		UserController: NewUserController(serviceManager.UserService),
 		MenuController: NewMenuController(serviceManager.MenuService),
 	}
+	utils.CheckDependencies(manager)
+	return &manager
 }

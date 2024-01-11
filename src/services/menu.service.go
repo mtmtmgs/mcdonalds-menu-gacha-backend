@@ -8,6 +8,7 @@ import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/pkg/errors"
 )
 
@@ -25,10 +26,12 @@ func NewMenuService(
 	baseRepository repositories.IBaseRepository,
 	menuRepository repositories.IMenuRepository,
 ) *MenuService {
-	return &MenuService{
+	menuService := MenuService{
 		baseRepository: baseRepository,
 		menuRepository: menuRepository,
 	}
+	utils.CheckDependencies(menuService)
+	return &menuService
 }
 
 /*

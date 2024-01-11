@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/uptrace/bun"
 )
 
@@ -15,7 +16,9 @@ type BaseRepository struct {
 }
 
 func NewBaseRepository(db *bun.DB) *BaseRepository {
-	return &BaseRepository{db: db}
+	baseRepository := BaseRepository{db: db}
+	utils.CheckDependencies(baseRepository)
+	return &baseRepository
 }
 
 func (baseRepository *BaseRepository) GetDB() *bun.DB {

@@ -6,6 +6,7 @@ import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,7 +21,9 @@ type UserController struct {
 }
 
 func NewUserController(userService services.IUserService) *UserController {
-	return &UserController{userService: userService}
+	userController := UserController{userService: userService}
+	utils.CheckDependencies(userController)
+	return &userController
 }
 
 /*

@@ -5,6 +5,7 @@ import (
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/uptrace/bun"
 )
 
@@ -17,7 +18,9 @@ type MenuRepository struct {
 }
 
 func NewMenuRepository(db *bun.DB) *MenuRepository {
-	return &MenuRepository{db: db}
+	menuRepository := MenuRepository{db: db}
+	utils.CheckDependencies(menuRepository)
+	return &menuRepository
 }
 
 func (menuRepository *MenuRepository) GetMenuList(page int, category string, mealTimeType string) ([]models.Menu, int, error) {

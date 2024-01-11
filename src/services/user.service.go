@@ -25,10 +25,12 @@ func NewUserService(
 	baseRepository repositories.IBaseRepository,
 	userRepository repositories.IUserRepository,
 ) *UserService {
-	return &UserService{
+	userService := UserService{
 		baseRepository: baseRepository,
 		userRepository: userRepository,
 	}
+	utils.CheckDependencies(userService)
+	return &userService
 }
 
 /*

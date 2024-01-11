@@ -1,6 +1,9 @@
 package repositories
 
-import "github.com/uptrace/bun"
+import (
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
+	"github.com/uptrace/bun"
+)
 
 type Manager struct {
 	BaseRepository IBaseRepository
@@ -9,9 +12,11 @@ type Manager struct {
 }
 
 func New(db *bun.DB) *Manager {
-	return &Manager{
+	manager := Manager{
 		BaseRepository: NewBaseRepository(db),
 		UserRepository: NewUserRepository(db),
 		MenuRepository: NewMenuRepository(db),
 	}
+	utils.CheckDependencies(manager)
+	return &manager
 }

@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 )
 
 type Manager struct {
@@ -10,7 +11,7 @@ type Manager struct {
 }
 
 func New(repositoryManager *repositories.Manager) *Manager {
-	return &Manager{
+	manager := Manager{
 		UserService: NewUserService(
 			repositoryManager.BaseRepository,
 			repositoryManager.UserRepository,
@@ -20,4 +21,6 @@ func New(repositoryManager *repositories.Manager) *Manager {
 			repositoryManager.MenuRepository,
 		),
 	}
+	utils.CheckDependencies(manager)
+	return &manager
 }

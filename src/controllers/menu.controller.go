@@ -5,6 +5,7 @@ import (
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,7 +19,9 @@ type MenuController struct {
 }
 
 func NewMenuController(menuService services.IMenuService) *MenuController {
-	return &MenuController{menuService: menuService}
+	menuController := MenuController{menuService: menuService}
+	utils.CheckDependencies(menuController)
+	return &menuController
 }
 
 /*
