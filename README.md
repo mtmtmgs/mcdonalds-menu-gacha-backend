@@ -104,7 +104,7 @@ mcdonalds-menu-gacha-backend/
 
 1. 環境変数
 
-```
+```txt
 .env.sample をコピーして.env を追加
 ※WEBアプリとDBのタイムゾーンはUTC
 ```
