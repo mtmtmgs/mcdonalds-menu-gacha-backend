@@ -23,16 +23,16 @@ URL: https://hm-mtmtmgs.net/v1/menu-gacha?budget=1000
 
 ## 技術構成
 
-| カテゴリ | 技術スタック                                                               |
-| -------- | -------------------------------------------------------------------------- |
-| 言語     | Go, [echo](https://github.com/labstack/echo)                               |
-| DB       | PostgreSQL                                                                 |
-| ORM      | [bun](https://github.com/uptrace/bun)                                      |
-| インフラ | GCP, Cloud Run, Cloud SQL                                                  |
-| CI/CD    | GitHub Actions                                                             |
-| テスト   | go test, [golangci-lint](https://github.com/golangci/golangci-lint)        |
-| 開発環境 | Docker                                                                     |
-| その他   | JWT 認証, [validator](https://github.com/go-playground/validator), Swagger |
+| カテゴリ | 技術スタック                                                        |
+| -------- | ------------------------------------------------------------------- |
+| 言語     | Go, [echo](https://github.com/labstack/echo)                        |
+| DB       | PostgreSQL                                                          |
+| ORM      | [bun](https://github.com/uptrace/bun)                               |
+| インフラ | Cloud Build, Cloud Run, Cloud SQL                                   |
+| CI/CD    | GitHub Actions                                                      |
+| テスト   | go test, [golangci-lint](https://github.com/golangci/golangci-lint) |
+| 開発環境 | Docker                                                              |
+| その他   | JWT 認証, [validator](https://github.com/go-playground/validator)   |
 
 ## ディレクトリ構造
 
