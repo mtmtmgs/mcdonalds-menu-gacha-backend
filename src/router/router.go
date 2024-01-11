@@ -14,6 +14,7 @@ func New(env env.Env) *echo.Echo {
 	e.Validator = middlewares.NewValidatorMiddleware()
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
+	e.Use(middleware.RequestID())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 	return e
