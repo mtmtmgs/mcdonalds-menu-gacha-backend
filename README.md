@@ -15,6 +15,7 @@ URL: https://hm-mtmtmgs.net/v1/menu-gacha?budget=1000
     - [ユーザ](#ユーザ)
     - [メニュー](#メニュー)
   - [環境構築](#環境構築)
+  - [ブランチ運用](#ブランチ運用)
 
 ## システム構成図
 
@@ -42,7 +43,7 @@ mcdonalds-menu-gacha-backend/
     |    |    |-- scripts/ # バッチスクリプト群
     |    |    |-- batch.go # バッチのエントリ
     |    |
-    |    |-- consts/ # アプリケーション定数
+    |    |-- consts/ # アプリケーション定数群
     |    |-- controllers/ # ハンドラ群
     |    |    |-- requests/ # serviceの引数の型、バリデーション
     |    |    |-- responses/ # serviceの返り値の型
@@ -59,14 +60,14 @@ mcdonalds-menu-gacha-backend/
     |    |    |-- db.go # DBクライアント生成
     |    |
     |    |-- env/env.go # devとprodの設定
-    |    |-- models/ # DBモデル, エンティティ
-    |    |-- repositories/ # DBリポジトリ
+    |    |-- models/ # DBモデル, エンティティ群
+    |    |-- repositories/ # DBリポジトリ群
     |    |-- router/
     |    |    |-- middleware/ # ミドルウェア jwt, validator, etc.
     |    |    |-- router.go # ルーティング
     |    |
-    |    |-- services/ # ビジネスロジック
-    |    |-- utils/ # ユーティリティ hash, time, etc
+    |    |-- services/ # ビジネスロジック群
+    |    |-- utils/ # ユーティリティ群 hash, time, etc.
     |    |-- .dockerignore
     |    |-- .env.sample # アプリケーションの.env
     |    |-- Dockerfile
@@ -74,7 +75,7 @@ mcdonalds-menu-gacha-backend/
     |    |-- go.sum
     |    |-- main.go # アプリケーションのエントリ
     |
-    |-- .github/workflows # Lint, テスト, デプロイ
+    |-- .github/workflows/main.yml # lint, テスト, デプロイ
     |-- .env.sample # docker-compose.ymlの.env
     |-- .gitignore
     |-- Makefile # 開発用のコマンドリスト
@@ -100,3 +101,54 @@ mcdonalds-menu-gacha-backend/
 | メニューリスト |   GET    | /v1/menus      |    有    |                                      |
 
 ## 環境構築
+
+1. .env.sample をコピーして.env を追加
+
+2. docker-compose 起動
+
+```sh
+docker compose up -d
+```
+
+3. マイグレーション管理テーブル作成
+
+```sh
+make db-migrate-init
+```
+
+4. マイグレーション実行
+
+```sh
+make db-migrate-up
+```
+
+5. ~~バッチ実行、メニューデータを取得して DB 登録~~ ※規約要確認
+
+```sh
+make batch-exec
+```
+
+6. シードデータ DB 登録、メニューデータのシード、バッチではなく基本はこちらを使う
+
+```sh
+make db-seed
+```
+
+7. WEB アプリ起動
+
+```sh
+make web-launch
+```
+
+## ブランチ運用
+
+gitlab flow にならう
+
+| ブランチ名 | 役割             | マージ先 |
+| ---------- | ---------------- | -------- |
+| main       | 公開可能なもの   | prod     |
+| prod       | リリースするもの |          |
+| feature/\* | 新規開発のもの   | main     |
+| fix/\*     | バグ修正のもの   | main     |
+
+※ prod ブランチ push 時に GitHub Actions で検知し本番へ公開
