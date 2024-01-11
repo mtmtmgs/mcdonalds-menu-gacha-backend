@@ -102,7 +102,12 @@ mcdonalds-menu-gacha-backend/
 
 ## 環境構築
 
-1. .env.sample をコピーして.env を追加
+1. 環境変数
+
+```
+.env.sample をコピーして.env を追加
+※WEBアプリとDBのタイムゾーンはUTC
+```
 
 2. docker-compose 起動
 

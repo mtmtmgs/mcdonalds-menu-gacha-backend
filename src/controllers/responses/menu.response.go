@@ -3,6 +3,7 @@ package responses
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 )
 
 /*
@@ -32,7 +33,7 @@ func NewGetMenuListResponse(menuList []models.Menu, totalCount int) GetMenuListR
 		res.PerPageCount = consts.PerPageCount
 		res.Items = append(res.Items, GetMenuListItem{
 			Id:           menu.Id,
-			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),
+			CreatedAt:    utils.TimeFormat(utils.ConvertTimeUtcToJst(menu.CreatedAt), "yyyyMMddHHmmss"),
 			Name:         menu.Name,
 			Price:        menu.Price,
 			Category:     menu.Category,
@@ -70,7 +71,7 @@ func NewGetMenuGachaResponse(menuList []models.Menu, budget int) GetMenuGachaRes
 		res.TotalPrice = res.TotalPrice + int(menu.Price)
 		res.Items = append(res.Items, GetMenuGachaItem{
 			Id:           menu.Id,
-			CreatedAt:    menu.CreatedAt.Format("2006-01-02 15:04:05"),
+			CreatedAt:    utils.TimeFormat(utils.ConvertTimeUtcToJst(menu.CreatedAt), "yyyyMMddHHmmss"),
 			Name:         menu.Name,
 			Price:        menu.Price,
 			Category:     menu.Category,
