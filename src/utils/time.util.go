@@ -6,19 +6,13 @@ import (
 
 func NowTimeJst() time.Time {
 	now := time.Now()
-	jstLocation, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		return time.Time{}
-	}
+	jstLocation := time.FixedZone("Asia/Tokyo", 9*60*60)
 	nowJst := now.In(jstLocation)
 	return nowJst
 }
 
 func ConvertTimeUtcToJst(utcTime time.Time) time.Time {
-	jstLocation, err := time.LoadLocation("Asia/Tokyo")
-	if err != nil {
-		return time.Time{}
-	}
+	jstLocation := time.FixedZone("Asia/Tokyo", 9*60*60)
 	jstTime := utcTime.In(jstLocation)
 	return jstTime
 }
