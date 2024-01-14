@@ -37,15 +37,22 @@ func NewUserService(
 サインアップ
 */
 func (userService *UserService) SignUp(req requests.SignUpRequest) error {
-	hashPassword, err := utils.HashPassword(req.Password)
+	password, err := models.NewUserPassword(req.Password)
+	if err != nil {
+		return err
+	}
+	hashPassword, err := utils.HashPassword(password)
 	if err != nil {
 		return errors.Errorf("Something went wrong")
 	}
-	user := models.User{
+	user, err := models.NewUser(models.User{
 		FirstName: req.FirstName,
 		LastName:  req.LastName,
 		Email:     req.Email,
 		Password:  hashPassword,
+	})
+	if err != nil {
+		return err
 	}
 	err = userService.userRepository.CreateUser(user)
 	if err != nil {
