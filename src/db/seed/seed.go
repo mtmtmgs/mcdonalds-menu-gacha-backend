@@ -32,7 +32,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var menu models.Menu
 	var menuList []models.Menu
 	for i, record := range records {
 		if i == 0 {
@@ -42,10 +41,16 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		menu.Name = record[0]
-		menu.Price = int64(price)
-		menu.Category = record[2]
-		menu.MealTimeType = record[3]
+		menu, err := models.NewMenu(models.Menu{
+			Name:         record[0],
+			Price:        int64(price),
+			Category:     record[2],
+			MealTimeType: record[3],
+		})
+		if err != nil {
+			log.Printf("追加できませんでした: %v %s", menu, err)
+			continue
+		}
 		menuList = append(menuList, menu)
 	}
 

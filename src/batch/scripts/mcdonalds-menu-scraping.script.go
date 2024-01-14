@@ -10,25 +10,9 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 	"github.com/uptrace/bun"
-)
-
-const (
-	Morning = "朝マック"
-	Noon    = "ひるまック"
-	Night   = "夜マック"
-	Regular = "レギュラー"
-)
-
-const (
-	Burger   = "バーガー"
-	Set      = "セット"
-	Side     = "サイドメニュー"
-	Drink    = "ドリンク"
-	HappySet = "ハッピーセット"
-	Dessert  = "スイーツ"
-	McCafe   = "マックカフェ"
 )
 
 const (
@@ -56,20 +40,20 @@ func FetchAndRegisterMcdonaldsMenu(db *bun.DB) error {
 	log.Println("------------------------------------------------------------")
 	// 時間帯別リスト
 	var mealTimeTypes = []string{
-		Morning,
-		Noon,
-		Night,
-		Regular,
+		consts.Morning,
+		consts.Noon,
+		consts.Night,
+		consts.Regular,
 	}
 	// メニューカテゴリリスト
 	var categories = []category{
-		{name: Burger, url: burgerUrl},
-		{name: Set, url: setUrl},
-		{name: Side, url: sideUrl},
-		{name: Drink, url: drinkUrl},
-		{name: HappySet, url: happySetUrl},
-		{name: Dessert, url: dessertUrl},
-		{name: McCafe, url: mcCafeUrl},
+		{name: consts.Burger, url: burgerUrl},
+		{name: consts.Set, url: setUrl},
+		{name: consts.Side, url: sideUrl},
+		{name: consts.Drink, url: drinkUrl},
+		{name: consts.HappySet, url: happySetUrl},
+		{name: consts.Dessert, url: dessertUrl},
+		{name: consts.McCafe, url: mcCafeUrl},
 	}
 
 	ch := make(chan models.Menu, 300)
@@ -84,6 +68,11 @@ func FetchAndRegisterMcdonaldsMenu(db *bun.DB) error {
 
 	var menuList []models.Menu
 	for menu := range ch {
+		menu, err := models.NewMenu(menu)
+		if err != nil {
+			log.Printf("追加できませんでした: %v %s", menu, err)
+			continue
+		}
 		menuList = append(menuList, menu)
 	}
 
@@ -130,28 +119,28 @@ func fetchMenus(ch chan models.Menu, wg *sync.WaitGroup, mealTimeTypes []string,
 	var count int
 	for _, mealTimeType := range mealTimeTypes {
 		// 時間帯別で該当するメニューは存在しないので飛ばす
-		if mealTimeType == Morning && (category.name == Drink || category.name == Dessert || category.name == McCafe) {
+		if mealTimeType == consts.Morning && (category.name == consts.Drink || category.name == consts.Dessert || category.name == consts.McCafe) {
 			continue
 		}
-		if mealTimeType == Noon && category.name != Set {
+		if mealTimeType == consts.Noon && category.name != consts.Set {
 			continue
 		}
-		if mealTimeType == Night && (category.name == Drink || category.name == HappySet || category.name == Dessert || category.name == McCafe) {
+		if mealTimeType == consts.Night && (category.name == consts.Drink || category.name == consts.HappySet || category.name == consts.Dessert || category.name == consts.McCafe) {
 			continue
 		}
 
 		// メニューに基づいて対象とするセレクタを分ける
 		var selector string
-		if category.name == Burger || category.name == Set || category.name == Side || category.name == HappySet {
+		if category.name == consts.Burger || category.name == consts.Set || category.name == consts.Side || category.name == consts.HappySet {
 			selector = fmt.Sprintf(".collection-products [data-daypart='%s'] .product-list-wrapper .product-list", mealTimeType)
-			if mealTimeType == Noon {
+			if mealTimeType == consts.Noon {
 				selector = fmt.Sprintf(".collection-products [data-daypart='%s'] .product-list-wrapper .product-list", "ひるまック（平日限定）")
 			}
 		}
-		if category.name == Drink || category.name == Dessert {
+		if category.name == consts.Drink || category.name == consts.Dessert {
 			selector = ".product-list-wrapper .product-list"
 		}
-		if category.name == McCafe {
+		if category.name == consts.McCafe {
 			selector = ".product-list-wrapper.flex.flex-wrap.pb-8 .product-list"
 		}
 
