@@ -1,6 +1,6 @@
 package responses
 
-import "github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+import "github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 
 /*
 ユーザ取得

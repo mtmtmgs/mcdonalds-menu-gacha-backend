@@ -6,7 +6,7 @@ import (
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/pkg/errors"

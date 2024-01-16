@@ -11,7 +11,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 	"github.com/uptrace/bun"
 )
 

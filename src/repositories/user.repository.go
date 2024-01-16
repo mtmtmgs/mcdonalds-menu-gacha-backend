@@ -3,7 +3,7 @@ package repositories
 import (
 	"context"
 
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/uptrace/bun"
 )

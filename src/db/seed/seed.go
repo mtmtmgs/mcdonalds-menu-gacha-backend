@@ -8,8 +8,8 @@ import (
 	"strconv"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/db"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/models"
 )
 
 func main() {
