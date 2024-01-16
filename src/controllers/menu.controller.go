@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/usecases"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/labstack/echo/v4"
 )
@@ -15,11 +15,11 @@ type IMenuController interface {
 }
 
 type MenuController struct {
-	menuService services.IMenuService
+	menuUsecase usecases.IMenuUsecase
 }
 
-func NewMenuController(menuService services.IMenuService) *MenuController {
-	menuController := MenuController{menuService: menuService}
+func NewMenuController(menuUsecase usecases.IMenuUsecase) *MenuController {
+	menuController := MenuController{menuUsecase: menuUsecase}
 	utils.CheckDependencies(menuController)
 	return &menuController
 }
@@ -29,7 +29,7 @@ func NewMenuController(menuService services.IMenuService) *MenuController {
 */
 func (menuController *MenuController) GetMenuList(c echo.Context) error {
 	req := requests.NewGetMenuListRequest(c)
-	res, err := menuController.menuService.GetMenuList(req)
+	res, err := menuController.menuUsecase.GetMenuList(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
@@ -41,7 +41,7 @@ func (menuController *MenuController) GetMenuList(c echo.Context) error {
 */
 func (menuController *MenuController) GetMenuGacha(c echo.Context) error {
 	req := requests.NewGetMenuGachaRequest(c)
-	res, err := menuController.menuService.GetMenuGacha(req)
+	res, err := menuController.menuUsecase.GetMenuGacha(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}

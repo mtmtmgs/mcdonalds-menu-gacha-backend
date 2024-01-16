@@ -1,4 +1,4 @@
-package services
+package usecases
 
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
@@ -10,33 +10,33 @@ import (
 	"github.com/pkg/errors"
 )
 
-type IUserService interface {
+type IUserUsecase interface {
 	SignUp(requests.SignUpRequest) error
 	Login(requests.LoginRequest) (responses.TokenResponse, error)
 	GetUser(uint) (responses.GetUserResponse, error)
 }
 
-type UserService struct {
+type UserUsecase struct {
 	baseRepository repositories.IBaseRepository
 	userRepository repositories.IUserRepository
 }
 
-func NewUserService(
+func NewUserUsecase(
 	baseRepository repositories.IBaseRepository,
 	userRepository repositories.IUserRepository,
-) *UserService {
-	userService := UserService{
+) *UserUsecase {
+	userUsecase := UserUsecase{
 		baseRepository: baseRepository,
 		userRepository: userRepository,
 	}
-	utils.CheckDependencies(userService)
-	return &userService
+	utils.CheckDependencies(userUsecase)
+	return &userUsecase
 }
 
 /*
 サインアップ
 */
-func (userService *UserService) SignUp(req requests.SignUpRequest) error {
+func (userUsecase *UserUsecase) SignUp(req requests.SignUpRequest) error {
 	password, err := models.NewUserPassword(req.Password)
 	if err != nil {
 		return err
@@ -54,7 +54,7 @@ func (userService *UserService) SignUp(req requests.SignUpRequest) error {
 	if err != nil {
 		return err
 	}
-	err = userService.userRepository.CreateUser(user)
+	err = userUsecase.userRepository.CreateUser(user)
 	if err != nil {
 		return errors.Errorf("Something went wrong")
 	}
@@ -64,9 +64,9 @@ func (userService *UserService) SignUp(req requests.SignUpRequest) error {
 /*
 ログイン
 */
-func (userService *UserService) Login(req requests.LoginRequest) (responses.TokenResponse, error) {
+func (userUsecase *UserUsecase) Login(req requests.LoginRequest) (responses.TokenResponse, error) {
 	var res responses.TokenResponse
-	user, err := userService.userRepository.GetUserByEmail(req.Email)
+	user, err := userUsecase.userRepository.GetUserByEmail(req.Email)
 	if user == (models.User{}) {
 		return res, errors.Errorf("Unauthorized")
 	}
@@ -90,9 +90,9 @@ func (userService *UserService) Login(req requests.LoginRequest) (responses.Toke
 /*
 ユーザ取得
 */
-func (userService *UserService) GetUser(userId uint) (responses.GetUserResponse, error) {
+func (userUsecase *UserUsecase) GetUser(userId uint) (responses.GetUserResponse, error) {
 	var res responses.GetUserResponse
-	user, err := repositories.GetById[models.User](userService.baseRepository.GetDB(), userId)
+	user, err := repositories.GetById[models.User](userUsecase.baseRepository.GetDB(), userId)
 	if err != nil {
 		return res, errors.Errorf("Unauthorized")
 	}

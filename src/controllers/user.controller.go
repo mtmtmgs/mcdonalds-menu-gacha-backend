@@ -5,7 +5,7 @@ import (
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/usecases"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
 	"github.com/labstack/echo/v4"
 )
@@ -17,11 +17,11 @@ type IUserController interface {
 }
 
 type UserController struct {
-	userService services.IUserService
+	userUsecase usecases.IUserUsecase
 }
 
-func NewUserController(userService services.IUserService) *UserController {
-	userController := UserController{userService: userService}
+func NewUserController(userUsecase usecases.IUserUsecase) *UserController {
+	userController := UserController{userUsecase: userUsecase}
 	utils.CheckDependencies(userController)
 	return &userController
 }
@@ -34,7 +34,7 @@ func (userController *UserController) SignUp(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	err = userController.userService.SignUp(req)
+	err = userController.userUsecase.SignUp(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
@@ -49,7 +49,7 @@ func (userController *UserController) Login(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
-	res, err := userController.userService.Login(req)
+	res, err := userController.userUsecase.Login(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err)
 	}
@@ -61,7 +61,7 @@ func (userController *UserController) Login(c echo.Context) error {
 */
 func (userController *UserController) GetUser(c echo.Context) error {
 	userId := middlewares.GetUserIdByJwt(c)
-	res, err := userController.userService.GetUser(userId)
+	res, err := userController.userUsecase.GetUser(userId)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, nil)
 	}

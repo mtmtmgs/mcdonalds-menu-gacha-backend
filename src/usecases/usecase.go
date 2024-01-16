@@ -1,4 +1,4 @@
-package services
+package usecases
 
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
@@ -6,17 +6,17 @@ import (
 )
 
 type Manager struct {
-	UserService IUserService
-	MenuService IMenuService
+	UserUsecase IUserUsecase
+	MenuUsecase IMenuUsecase
 }
 
 func New(repositoryManager *repositories.Manager) *Manager {
 	manager := Manager{
-		UserService: NewUserService(
+		UserUsecase: NewUserUsecase(
 			repositoryManager.BaseRepository,
 			repositoryManager.UserRepository,
 		),
-		MenuService: NewMenuService(
+		MenuUsecase: NewMenuUsecase(
 			repositoryManager.BaseRepository,
 			repositoryManager.MenuRepository,
 		),

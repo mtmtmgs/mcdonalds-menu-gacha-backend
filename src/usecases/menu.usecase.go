@@ -1,4 +1,4 @@
-package services
+package usecases
 
 import (
 	"math/rand"
@@ -12,34 +12,34 @@ import (
 	"github.com/pkg/errors"
 )
 
-type IMenuService interface {
+type IMenuUsecase interface {
 	GetMenuList(requests.GetMenuListRequest) (responses.GetMenuListResponse, error)
 	GetMenuGacha(requests.GetMenuGachaRequest) (responses.GetMenuGachaResponse, error)
 }
 
-type MenuService struct {
+type MenuUsecase struct {
 	baseRepository repositories.IBaseRepository
 	menuRepository repositories.IMenuRepository
 }
 
-func NewMenuService(
+func NewMenuUsecase(
 	baseRepository repositories.IBaseRepository,
 	menuRepository repositories.IMenuRepository,
-) *MenuService {
-	menuService := MenuService{
+) *MenuUsecase {
+	menuUsecase := MenuUsecase{
 		baseRepository: baseRepository,
 		menuRepository: menuRepository,
 	}
-	utils.CheckDependencies(menuService)
-	return &menuService
+	utils.CheckDependencies(menuUsecase)
+	return &menuUsecase
 }
 
 /*
 メニューリスト取得
 */
-func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (responses.GetMenuListResponse, error) {
+func (menuUsecase *MenuUsecase) GetMenuList(req requests.GetMenuListRequest) (responses.GetMenuListResponse, error) {
 	var res responses.GetMenuListResponse
-	menuList, totalCount, err := menuService.menuRepository.GetMenuList(req.Page, req.Category, req.MealTimeType)
+	menuList, totalCount, err := menuUsecase.menuRepository.GetMenuList(req.Page, req.Category, req.MealTimeType)
 	if err != nil {
 		return res, errors.Errorf("Something went wrong")
 	}
@@ -50,9 +50,9 @@ func (menuService *MenuService) GetMenuList(req requests.GetMenuListRequest) (re
 /*
 メニューガチャ取得
 */
-func (menuService *MenuService) GetMenuGacha(req requests.GetMenuGachaRequest) (responses.GetMenuGachaResponse, error) {
+func (menuUsecase *MenuUsecase) GetMenuGacha(req requests.GetMenuGachaRequest) (responses.GetMenuGachaResponse, error) {
 	var res responses.GetMenuGachaResponse
-	menuList, err := repositories.GetList[models.Menu](menuService.baseRepository.GetDB())
+	menuList, err := repositories.GetList[models.Menu](menuUsecase.baseRepository.GetDB())
 	if err != nil {
 		return res, errors.Errorf("Something went wrong")
 	}

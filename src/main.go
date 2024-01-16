@@ -8,7 +8,7 @@ import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router"
-	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/services"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/usecases"
 )
 
 func main() {
@@ -16,8 +16,8 @@ func main() {
 
 	db := db.New(env)
 	repositories := repositories.New(db)
-	services := services.New(repositories)
-	controllers := controllers.New(services)
+	usecases := usecases.New(repositories)
+	controllers := controllers.New(usecases)
 
 	r := router.New(env)
 	router.Register(r, controllers)
