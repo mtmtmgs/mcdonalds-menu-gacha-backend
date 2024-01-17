@@ -5,6 +5,7 @@ import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/entities"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/services"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/values"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
@@ -21,15 +22,18 @@ type IUserUsecase interface {
 type UserUsecase struct {
 	baseRepository repositories.IBaseRepository
 	userRepository repositories.IUserRepository
+	userService    services.IUserService
 }
 
 func NewUserUsecase(
 	baseRepository repositories.IBaseRepository,
 	userRepository repositories.IUserRepository,
+	userService services.IUserService,
 ) *UserUsecase {
 	userUsecase := UserUsecase{
 		baseRepository: baseRepository,
 		userRepository: userRepository,
+		userService:    userService,
 	}
 	utils.CheckDependencies(userUsecase)
 	return &userUsecase
@@ -47,6 +51,10 @@ func (userUsecase *UserUsecase) SignUp(req requests.SignUpRequest) error {
 	)
 	if err != nil {
 		return err
+	}
+	// メールアドレスの重複チェック
+	if userUsecase.userService.IsUserEmailDuplication(user.Email) {
+		return errors.Errorf("メールアドレスは既に使用されています")
 	}
 	err = userUsecase.userRepository.CreateUser(user)
 	if err != nil {
