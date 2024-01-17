@@ -44,9 +44,9 @@ mcdonalds-menu-gacha-backend/
     |    |    |-- batch.go # バッチのエントリ
     |    |
     |    |-- consts/ # アプリケーション定数群
-    |    |-- controllers/ # ハンドラ群
-    |    |    |-- requests/ # serviceの引数の型、バリデーション
-    |    |    |-- responses/ # serviceの返り値の型
+    |    |-- controllers/ # コントローラー群, ハンドラ
+    |    |    |-- requests/ # usecaseの引数の型, DTO, バリデーション
+    |    |    |-- responses/ # usecaseの返り値の型, DTO
     |    |
     |    |-- db/
     |    |    |-- migrate/
@@ -59,14 +59,19 @@ mcdonalds-menu-gacha-backend/
     |    |    |
     |    |    |-- db.go # DBクライアント生成
     |    |
+    |    |-- domains
+    |    |    |-- entities/ # エンティティ群, 主にインスタンス生成
+    |    |    |-- models/ # モデル群, 主にDBカラム定義
+    |    |    |-- services/ # ドメインサービス群, ビジネスロジック
+    |    |    |-- values/ # 値オブジェクト群, ビジネスロジック
+    |    |
     |    |-- env/env.go # devとprodの設定
-    |    |-- models/ # DBモデル, エンティティ群
-    |    |-- repositories/ # DBリポジトリ群
+    |    |-- repositories/ # リポジトリ群, DBデータ操作
     |    |-- router/
-    |    |    |-- middleware/ # ミドルウェア jwt, validator, etc.
+    |    |    |-- middleware/ # ミドルウェア群 jwt, validator, etc.
     |    |    |-- router.go # ルーティング
     |    |
-    |    |-- services/ # ビジネスロジック群
+    |    |-- usecases/ # ユースケース群, コントローラーから呼び出す
     |    |-- utils/ # ユーティリティ群 hash, time, etc.
     |    |-- .dockerignore
     |    |-- .env.sample # アプリケーションの.env
@@ -127,7 +132,7 @@ make db-migrate-init
 make db-migrate-up
 ```
 
-5. ~~バッチ実行、メニューデータを取得して DB 登録~~ ※規約要確認
+1. ~~バッチ実行、メニューデータを取得して DB 登録~~
 
 ```sh
 make batch-exec
