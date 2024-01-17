@@ -8,7 +8,9 @@ import (
 	"strconv"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/db"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/entities"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/values"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/env"
 )
 
@@ -41,12 +43,12 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		menu, err := models.NewMenu(models.Menu{
-			Name:         record[0],
-			Price:        int64(price),
-			Category:     record[2],
-			MealTimeType: record[3],
-		})
+		menu, err := entities.NewMenu(
+			values.NewMenuName(record[0]),
+			values.NewMenuPrice(int64(price)),
+			values.NewMenuCategory(record[2]),
+			values.NewMenuMealTimeType(record[3]),
+		)
 		if err != nil {
 			log.Printf("追加できませんでした: %v %s", menu, err)
 			continue

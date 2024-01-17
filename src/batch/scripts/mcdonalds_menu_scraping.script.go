@@ -11,7 +11,9 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/consts"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/entities"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/values"
 	"github.com/uptrace/bun"
 )
 
@@ -68,7 +70,12 @@ func FetchAndRegisterMcdonaldsMenu(db *bun.DB) error {
 
 	var menuList []models.Menu
 	for menu := range ch {
-		menu, err := models.NewMenu(menu)
+		menu, err := entities.NewMenu(
+			values.NewMenuName(menu.Name),
+			values.NewMenuPrice(menu.Price),
+			values.NewMenuCategory(menu.Category),
+			values.NewMenuMealTimeType(menu.MealTimeType),
+		)
 		if err != nil {
 			log.Printf("追加できませんでした: %v %s", menu, err)
 			continue

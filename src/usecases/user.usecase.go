@@ -3,7 +3,9 @@ package usecases
 import (
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/requests"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/controllers/responses"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/entities"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
+	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/values"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/repositories"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/router/middlewares"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
@@ -37,20 +39,12 @@ func NewUserUsecase(
 サインアップ
 */
 func (userUsecase *UserUsecase) SignUp(req requests.SignUpRequest) error {
-	password, err := models.NewUserPassword(req.Password)
-	if err != nil {
-		return err
-	}
-	hashPassword, err := utils.HashPassword(password)
-	if err != nil {
-		return errors.Errorf("Something went wrong")
-	}
-	user, err := models.NewUser(models.User{
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Email:     req.Email,
-		Password:  hashPassword,
-	})
+	user, err := entities.NewUser(
+		values.NewUserLastName(req.LastName),
+		values.NewUserFirstName(req.FirstName),
+		values.NewEmail(req.Email),
+		values.NewUserPassword(req.Password),
+	)
 	if err != nil {
 		return err
 	}
