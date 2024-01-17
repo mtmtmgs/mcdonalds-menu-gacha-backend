@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"strings"
 
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/domains/models"
 	"github.com/hm-mtmtmgs/mcdonalds-menu-gacha-backend/utils"
@@ -26,7 +27,7 @@ func NewUserRepository(db *bun.DB) *UserRepository {
 func (userRepository *UserRepository) GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 	ctx := context.Background()
-	count, err := userRepository.db.NewSelect().Model(&user).Where("email = ?", email).ScanAndCount(ctx)
+	count, err := userRepository.db.NewSelect().Model(&user).Where("LOWER(email) = ?", strings.ToLower(email)).ScanAndCount(ctx)
 	if count != 0 {
 		err = nil
 	}
