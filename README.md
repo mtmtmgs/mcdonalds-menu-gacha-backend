@@ -132,7 +132,7 @@ make db-migrate-init
 make db-migrate-up
 ```
 
-1. ~~バッチ実行、メニューデータを取得して DB 登録~~ ※規約のため使用不可
+5. ~~バッチ実行、メニューデータを取得して DB 登録~~ ※規約のため使用不可
 
 ```sh
 make batch-exec
