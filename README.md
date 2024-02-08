@@ -1,6 +1,6 @@
 # mcdonalds-menu-gacha-backend
 
-某ハンバーガー店のメニューを予算内でランダムにリストで返却
+ハンバーガーメニューを予算内でランダムにリストで返却
 
 URL: https://hm-mtmtmgs.net/v1/menu-gacha?budget=1000
 
@@ -132,13 +132,13 @@ make db-migrate-init
 make db-migrate-up
 ```
 
-1. ~~バッチ実行、メニューデータを取得して DB 登録~~
+1. ~~バッチ実行、メニューデータを取得して DB 登録~~ ※規約のため使用不可
 
 ```sh
 make batch-exec
 ```
 
-6. シードデータ DB 登録、メニューデータのシード、バッチではなく基本はこちらを使う
+6. シードデータ DB 登録、メニューデータのシード、バッチではなくこちらを使う
 
 ```sh
 make db-seed
