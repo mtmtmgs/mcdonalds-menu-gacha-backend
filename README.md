@@ -1,8 +1,6 @@
 # mcdonalds-menu-gacha-backend
 
-ハンバーガーメニューを予算内でランダムにリストで返却
-
-URL: https://hm-mtmtmgs.net/v1/menu-gacha?budget=1000
+ハンバーガー店のメニューを予算内でランダムにリストで返却
 
 ## 目次
 
